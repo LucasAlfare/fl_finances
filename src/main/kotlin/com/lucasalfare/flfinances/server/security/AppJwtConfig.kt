@@ -10,10 +10,10 @@ import com.auth0.jwt.algorithms.Algorithm
  */
 object AppJwtConfig {
 
-  val realm: String = System.getenv("REALM")
-  private val audience = System.getenv("AUDIENCE")
-  private val issuer = System.getenv("ISSUER")
-  private val secret = System.getenv("SECRET")
+  val realm = System.getenv("REALM")?.toString() ?: "LOCAL-TMP-REALM"
+  private val audience = System.getenv("AUDIENCE")?.toString() ?: "LOCAL-TMP-AUDIENCE"
+  private val issuer = System.getenv("ISSUER")?.toString() ?: "LOCAL-TMP-ISSUER"
+  private val secret = System.getenv("SECRET")?.toString() ?: "LOCAL-TMP-SECRET"
 
   /**
    * Verifier for JWT tokens.
