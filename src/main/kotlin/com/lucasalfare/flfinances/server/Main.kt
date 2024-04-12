@@ -42,8 +42,8 @@ suspend fun main() {
   AppDB.initialize(
     jdbcUrl = "jdbc:sqlite:./data.db",
     jdbcDriverClassName = "org.sqlite.JDBC",
-    username = System.getenv("DATABASE_USERNAME"),
-    password = System.getenv("DATABASE_PASSWORD")
+    username = System.getenv("DATABASE_USERNAME") ?: "admin",
+    password = System.getenv("DATABASE_PASSWORD") ?: "admin"
   ) {
     SchemaUtils.createMissingTablesAndColumns(
       UsersTable,
