@@ -24,9 +24,6 @@ dependencies {
   implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
   implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
-  // dependências para contentnegotiation para CLIENT
-  implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
-
   // dependências para gerenciamento de JWT
   implementation("io.ktor:ktor-server-auth:$ktor_version")
   implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
@@ -49,6 +46,9 @@ dependencies {
 
   // isso aqui serve apenas para gerar os logs da engine do servidor...
   implementation("ch.qos.logback:logback-classic:1.5.3")
+
+  // dependências para contentnegotiation para CLIENT
+  testImplementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
 
   testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
   testImplementation("org.jetbrains.kotlin:kotlin-test")
