@@ -21,7 +21,3 @@ enum class DatabaseError : AppError {
    */
   PasswordNotUpdated
 }
-
-fun DatabaseError.toErrorMessage() {
-
-}
