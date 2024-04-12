@@ -19,12 +19,6 @@ import org.jetbrains.exposed.sql.update
  */
 object UsersHandlerExposed : AppServiceAdapter() {
 
-  /**
-   * Creates a new user with the provided credentials.
-   *
-   * @param credentials The credentials containing login and password information for the new user.
-   * @return An [AppResult] indicating the success or failure of the user creation operation.
-   */
   override suspend fun createUser(credentials: Credentials): AppResult<Int, DatabaseError> {
     try {
       val id = AppDB.query {
@@ -39,12 +33,6 @@ object UsersHandlerExposed : AppServiceAdapter() {
     }
   }
 
-  /**
-   * Retrieves a user by their ID.
-   *
-   * @param id The ID of the user to retrieve.
-   * @return An [AppResult] containing the user if found, or indicating failure otherwise.
-   */
   override suspend fun getUserById(id: Int): AppResult<User, DatabaseError> {
     return try {
       val obj = AppDB.query {
@@ -63,13 +51,6 @@ object UsersHandlerExposed : AppServiceAdapter() {
     }
   }
 
-  /**
-   * Updates the password of a user by their ID.
-   *
-   * @param id The ID of the user whose password needs to be updated.
-   * @param nextPassword The new password to be set for the user.
-   * @return An [AppResult] indicating the success or failure of the password update operation.
-   */
   override suspend fun updatePasswordById(
     id: Int,
     nextPassword: UpdatePasswordRequestDTO
@@ -86,12 +67,7 @@ object UsersHandlerExposed : AppServiceAdapter() {
     }
   }
 
-  /**
-   * Checks the existence of a user by their ID.
-   *
-   * @param id The ID of the user to be checked for existence.
-   * @return An [AppResult] indicating the success or failure of the user existence check operation.
-   */
+
   override suspend fun checkUserExistenceById(id: Int): AppResult<Unit, DatabaseError> {
     val exists = AppDB.query {
       UsersTable.selectAll().where { UsersTable.id eq id }.singleOrNull()
@@ -100,12 +76,6 @@ object UsersHandlerExposed : AppServiceAdapter() {
     return if (exists) Success(Unit) else Failure(DatabaseError.NotFound)
   }
 
-  /**
-   * Checks the credentials of a user.
-   *
-   * @param credentials The credentials to be checked, containing login and password information.
-   * @return An [AppResult] indicating the success or failure of the credential validation operation.
-   */
   override suspend fun checkCredentials(credentials: Credentials): AppResult<Int, DatabaseError> {
     val loginSearch = AppDB.query {
       UsersTable.selectAll().where { UsersTable.login eq credentials.login }.singleOrNull()

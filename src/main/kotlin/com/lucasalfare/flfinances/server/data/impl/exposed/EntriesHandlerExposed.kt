@@ -16,16 +16,6 @@ import org.jetbrains.exposed.sql.selectAll
  */
 object EntriesHandlerExposed : AppServiceAdapter() {
 
-  /**
-   * Creates a new entry in the database.
-   *
-   * Before inserting, this function checks the existence of the related user by the received ID.
-   * If the user does not exist, it returns a failure with a NotFound database error.
-   *
-   * @param entry The entry to be created.
-   * @param relatedUserId The ID of the user related to the entry.
-   * @return An [AppResult] indicating the success or failure of the entry creation operation.
-   */
   override suspend fun createEntry(entry: Entry, relatedUserId: Int): AppResult<Int, DatabaseError> {
     // Before insert, we check user existence by the received ID
     // TODO: refactor this to a side Validator?
@@ -53,11 +43,6 @@ object EntriesHandlerExposed : AppServiceAdapter() {
     }
   }
 
-  /**
-   * Retrieves all entries from the database.
-   *
-   * @return An [AppResult] containing a list of entries if successful, or indicating failure otherwise.
-   */
   override suspend fun getAll(): AppResult<List<Entry>, DatabaseError> {
     try {
       val items = AppDB.query { EntriesTable.selectAll().map { it.toEntry() } }
@@ -67,12 +52,6 @@ object EntriesHandlerExposed : AppServiceAdapter() {
     }
   }
 
-  /**
-   * Retrieves entries associated with a specific user ID from the database.
-   *
-   * @param userId The ID of the user for whom entries are to be retrieved.
-   * @return An [AppResult] containing a list of entries if successful, or indicating failure otherwise.
-   */
   override suspend fun getEntriesByUserId(userId: Int): AppResult<List<Entry>, DatabaseError> {
     try {
       val items = AppDB.query {

@@ -16,13 +16,7 @@ import org.jetbrains.exposed.sql.selectAll
  */
 object AttachmentsHandlerExposed : AppServiceAdapter() {
 
-  /**
-   * Creates a new attachment associated with the specified entry ID.
-   *
-   * @param attachment The attachment data to be created.
-   * @param relatedEntryId The ID of the entry to which the attachment is related.
-   * @return An AppResult representing the success or failure of the operation.
-   */
+
   override suspend fun createAttachment(attachment: Attachment, relatedEntryId: Int): AppResult<Int, DatabaseError> {
     // TODO: check existence of the related entry ID
 
@@ -39,12 +33,6 @@ object AttachmentsHandlerExposed : AppServiceAdapter() {
     }
   }
 
-  /**
-   * Retrieves attachments associated with the specified entry ID.
-   *
-   * @param entryId The ID of the entry for which attachments are retrieved.
-   * @return An AppResult containing a list of attachments if successful, or an error otherwise.
-   */
   override suspend fun getAttachmentsByEntryId(entryId: Int): AppResult<List<Attachment>, DatabaseError> {
     // TODO: check existence of the related entry ID
 
@@ -65,12 +53,6 @@ object AttachmentsHandlerExposed : AppServiceAdapter() {
     }
   }
 
-  /**
-   * Retrieves attachments associated with the specified user ID.
-   *
-   * @param userId The ID of the user for which attachments are retrieved.
-   * @return An AppResult containing a list of attachments if successful, or an error otherwise.
-   */
   override suspend fun getAttachmentsByUserId(userId: Int): AppResult<List<Attachment>, DatabaseError> {
     // TODO: check existence of the related user ID
 
