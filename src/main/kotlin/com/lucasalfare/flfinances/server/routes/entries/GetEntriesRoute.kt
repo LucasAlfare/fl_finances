@@ -4,10 +4,9 @@ import com.lucasalfare.flfinances.server.entriesHandler
 import com.lucasalfare.flfinances.server.model.error.Failure
 import com.lucasalfare.flfinances.server.model.error.Success
 import com.lucasalfare.flfinances.server.routes.getUserIdFromJWT
+import com.lucasalfare.flfinances.server.routes.toResponseString
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
@@ -42,7 +41,7 @@ fun Route.getEntriesRoute() {
 
   get("/flfinances/users/entries/") {
     try {
-      val id = getUserIdFromJWT(call) ?: run {
+      val id = call.getUserIdFromJWT() ?: run {
         return@get call.respond(HttpStatusCode.BadRequest, "Bad JWT.")
       }
 
@@ -51,7 +50,7 @@ fun Route.getEntriesRoute() {
         is Failure -> return@get call.respond(HttpStatusCode.NotFound, result.error)
       }
     } catch (e: Exception) {
-      return@get call.respond(HttpStatusCode.BadRequest, e.toString())
+      return@get call.respond(HttpStatusCode.BadRequest, e.toResponseString())
     }
   }
 }

@@ -4,6 +4,7 @@ import com.lucasalfare.flfinances.server.attachmentsHandler
 import com.lucasalfare.flfinances.server.model.Attachment
 import com.lucasalfare.flfinances.server.model.error.Failure
 import com.lucasalfare.flfinances.server.model.error.Success
+import com.lucasalfare.flfinances.server.routes.toResponseString
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -37,7 +38,7 @@ fun Route.createAttachmentRoute() {
         is Failure -> return@post call.respond(HttpStatusCode.NotAcceptable, result.error)
       }
     } catch (e: Exception) {
-      return@post call.respond(HttpStatusCode.InternalServerError, e.toString())
+      return@post call.respond(HttpStatusCode.InternalServerError, e.toResponseString())
     }
   }
 }

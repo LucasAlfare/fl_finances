@@ -5,10 +5,7 @@ import com.lucasalfare.flfinances.server.data.AppServiceAdapter
 import com.lucasalfare.flfinances.server.model.Credentials
 import com.lucasalfare.flfinances.server.model.User
 import com.lucasalfare.flfinances.server.model.dto.UpdatePasswordRequestDTO
-import com.lucasalfare.flfinances.server.model.error.AppResult
-import com.lucasalfare.flfinances.server.model.error.DatabaseError
-import com.lucasalfare.flfinances.server.model.error.Failure
-import com.lucasalfare.flfinances.server.model.error.Success
+import com.lucasalfare.flfinances.server.model.error.*
 import com.lucasalfare.flfinances.server.security.Hashing
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
@@ -76,16 +73,16 @@ object UsersHandlerExposed : AppServiceAdapter() {
     return if (exists) Success(Unit) else Failure(DatabaseError.NotFound)
   }
 
-  override suspend fun checkCredentials(credentials: Credentials): AppResult<Int, DatabaseError> {
+  override suspend fun checkCredentials(credentials: Credentials): AppResult<Int, CredentialsError> {
     val loginSearch = AppDB.query {
       UsersTable.selectAll().where { UsersTable.login eq credentials.login }.singleOrNull()
     }
 
-    if (loginSearch == null) return Failure(DatabaseError.NotFound)
+    if (loginSearch == null) return Failure(CredentialsError.WrongCredentials)
     if (Hashing.check(credentials.password, loginSearch[UsersTable.hashedPassword])) {
       return Success(loginSearch[UsersTable.id].value)
     }
 
-    return Failure(DatabaseError.NotFound)
+    return Failure(CredentialsError.WrongCredentials)
   }
 }

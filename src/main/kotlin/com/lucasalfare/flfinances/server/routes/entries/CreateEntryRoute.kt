@@ -5,6 +5,7 @@ import com.lucasalfare.flfinances.server.model.Entry
 import com.lucasalfare.flfinances.server.model.error.Failure
 import com.lucasalfare.flfinances.server.model.error.Success
 import com.lucasalfare.flfinances.server.routes.getUserIdFromJWT
+import com.lucasalfare.flfinances.server.routes.toResponseString
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -30,7 +31,7 @@ import io.ktor.server.routing.*
 fun Route.createEntryRoute() {
   post("/flfinances/users/entries/create") {
     try {
-      val id = getUserIdFromJWT(call) ?: run {
+      val id = call.getUserIdFromJWT() ?: run {
         return@post call.respond(HttpStatusCode.BadRequest, "Bad JWT.")
       }
 
@@ -40,7 +41,7 @@ fun Route.createEntryRoute() {
         is Failure -> return@post call.respond(HttpStatusCode.NotAcceptable, result.error)
       }
     } catch (e: Exception) {
-      return@post call.respond(HttpStatusCode.InternalServerError, e.toString())
+      return@post call.respond(HttpStatusCode.InternalServerError, e.toResponseString())
     }
   }
 }

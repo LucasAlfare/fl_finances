@@ -6,6 +6,7 @@ import com.lucasalfare.flfinances.server.model.Entry
 import com.lucasalfare.flfinances.server.model.User
 import com.lucasalfare.flfinances.server.model.dto.UpdatePasswordRequestDTO
 import com.lucasalfare.flfinances.server.model.error.AppResult
+import com.lucasalfare.flfinances.server.model.error.CredentialsError
 import com.lucasalfare.flfinances.server.model.error.DatabaseError
 import com.lucasalfare.flfinances.server.model.error.Failure
 
@@ -52,7 +53,7 @@ interface AppService {
    * @param credentials The credentials to be checked, containing login and password information.
    * @return An [AppResult] indicating the success or failure of the credential validation operation.
    */
-  suspend fun checkCredentials(credentials: Credentials): AppResult<Int, DatabaseError>
+  suspend fun checkCredentials(credentials: Credentials): AppResult<Int, CredentialsError>
 
   // ENTRIES service descriptions
 
@@ -131,8 +132,8 @@ abstract class AppServiceAdapter : AppService {
     return Failure(DatabaseError.NotFound)
   }
 
-  override suspend fun checkCredentials(credentials: Credentials): AppResult<Int, DatabaseError> {
-    return Failure(DatabaseError.NotFound)
+  override suspend fun checkCredentials(credentials: Credentials): AppResult<Int, CredentialsError> {
+    return Failure(CredentialsError.BadCredentials)
   }
 
   override suspend fun createEntry(entry: Entry, relatedUserId: Int): AppResult<Int, DatabaseError> {

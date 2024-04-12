@@ -36,7 +36,7 @@ fun Route.loginRoute() {
         is Failure -> return@post call.respond(HttpStatusCode.NotAcceptable, result.error)
       }
     } catch (e: Exception) {
-      return@post call.respond(HttpStatusCode.BadRequest, e.toString())
+      return@post call.respond(HttpStatusCode.BadRequest, e.toResponseString())
     }
   }
 }

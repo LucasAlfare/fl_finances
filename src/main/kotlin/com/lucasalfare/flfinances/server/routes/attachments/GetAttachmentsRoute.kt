@@ -3,6 +3,8 @@ package com.lucasalfare.flfinances.server.routes.attachments
 import com.lucasalfare.flfinances.server.attachmentsHandler
 import com.lucasalfare.flfinances.server.model.error.Failure
 import com.lucasalfare.flfinances.server.model.error.Success
+import com.lucasalfare.flfinances.server.routes.getUserIdFromJWT
+import com.lucasalfare.flfinances.server.routes.toResponseString
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -25,27 +27,32 @@ import io.ktor.server.routing.*
  * @receiver The Route instance to which the routes are added.
  */
 fun Route.getAttachmentsRoute() {
-  get("/flfinances/entries/{id}/attachments") {
+  get("/flfinances/entries/{entry_id}/attachments") {
     try {
-      val entryId = (call.parameters["id"] ?: return@get call.respond(HttpStatusCode.BadRequest, "BAD URL")).toInt()
+      val entryId =
+        (call.parameters["entry_id"] ?: return@get call.respond(HttpStatusCode.BadRequest, "BAD URL")).toInt()
+
       when (val result = attachmentsHandler.getAttachmentsByEntryId(entryId)) {
         is Success -> return@get call.respond(HttpStatusCode.OK, result.data)
         is Failure -> return@get call.respond(HttpStatusCode.InternalServerError, result.error)
       }
     } catch (e: Exception) {
-      return@get call.respond(HttpStatusCode.InternalServerError, e.toString())
+      return@get call.respond(HttpStatusCode.InternalServerError, e.toResponseString())
     }
   }
 
-  get("/flfinances/users/{id}/attachments") {
+  get("/flfinances/users/attachments") {
     try {
-      val userId = (call.parameters["id"] ?: return@get call.respond(HttpStatusCode.BadRequest, "BAD URL")).toInt()
+      val userId = call.getUserIdFromJWT() ?: run {
+        return@get call.respond(HttpStatusCode.BadRequest, "Bad JWT.")
+      }
+
       when (val result = attachmentsHandler.getAttachmentsByUserId(userId)) {
         is Success -> return@get call.respond(HttpStatusCode.OK, result.data)
         is Failure -> return@get call.respond(HttpStatusCode.InternalServerError, result.error)
       }
     } catch (e: Exception) {
-      return@get call.respond(HttpStatusCode.InternalServerError, e.toString())
+      return@get call.respond(HttpStatusCode.InternalServerError, e.toResponseString())
     }
   }
 }
