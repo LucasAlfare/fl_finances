@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  fl-finances-api:
+    build: .
+    #    env_file:
+    #      - .env
+    ports:
+      - "9999:9999"
+    environment:
+#      DATABASE_USERNAME: test123
+#      DATABASE_PASSWORD: test123123
+#      AUDIENCE: FL_USERS
+#      ISSUER: FL_ADMIN
+#      REALM: Access_To_FL_Finances
+#      SECRET: my_secret
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      AUDIENCE: ${AUDIENCE}
+      ISSUER: ${ISSUER}
+      REALM: ${REALM}
+      SECRET: ${SECRET}
