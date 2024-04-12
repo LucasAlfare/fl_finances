@@ -119,12 +119,3 @@ object UsersHandlerExposed : AppServiceAdapter() {
     return Failure(DatabaseError.NotFound)
   }
 }
-
-object UsersHandlerMongo : AppServiceAdapter() {
-
-  override suspend fun getUserById(id: Int): AppResult<User, DatabaseError> {
-    // TODO: MONGO operations to get the user based on their ID
-
-    return super.getUserById(id)
-  }
-}
