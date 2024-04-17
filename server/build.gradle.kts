@@ -1,10 +1,11 @@
-@file:Suppress("PropertyName")
+@file:Suppress("PropertyName", "SpellCheckingInspection")
 
+val kotlin_version: String by project
 val ktor_version: String by project
 
 plugins {
-  kotlin("jvm") version "1.9.10"
-  id("org.jetbrains.kotlin.plugin.serialization") version "1.9.10"
+  kotlin("jvm")
+  id("org.jetbrains.kotlin.plugin.serialization")
   application
 }
 
@@ -54,10 +55,6 @@ dependencies {
   testImplementation("org.jetbrains.kotlin:kotlin-test")
 }
 
-//tasks.test {
-//  useJUnitPlatform()
-//}
-
 kotlin {
   jvmToolchain(17)
 }
@@ -68,11 +65,14 @@ application {
 }
 
 /*
-This specifies a custom task when creating a ".jar" for this project.
+This specifies a custom task for creating a ".jar" for this project.
 The main thing is to define manifest and include all dependencies in the final `.jar`.
+
+Also, this is needed because we need to specify that info when creating a jar.
  */
 tasks.withType<Jar> {
   manifest {
+    // "Main-Class" is set to the actual main file path
     attributes["Main-Class"] = "com.lucasalfare.flfinances.server.MainKt"
   }
 

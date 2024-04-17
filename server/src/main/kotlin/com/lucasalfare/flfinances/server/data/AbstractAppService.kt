@@ -112,6 +112,9 @@ interface AppService {
   suspend fun getAttachmentsByUserId(userId: Int): AppResult<List<Attachment>, DatabaseError>
 }
 
+/**
+ *
+ */
 abstract class AppServiceAdapter : AppService {
   override suspend fun createUser(credentials: Credentials): AppResult<Int, DatabaseError> {
     return Failure(DatabaseError.NotFound)
