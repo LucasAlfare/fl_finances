@@ -1,3 +1,6 @@
+❗ Attention: this is a temporary auto-generated README and should be updated after first release with the final instructions and docs.
+-
+
 # FL-Finances
 
 FL-Finances is a Kotlin-based web application for managing financial transactions. It provides functionalities for
@@ -86,4 +89,4 @@ Contributions are welcome! Please feel free to submit issues or pull requests.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
